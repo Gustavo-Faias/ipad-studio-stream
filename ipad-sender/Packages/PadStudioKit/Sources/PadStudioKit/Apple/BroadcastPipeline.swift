@@ -154,16 +154,31 @@ private final class StatsLogger: StatsSource {
     init(logger: Logger) { self.logger = logger }
 
     func contribute(to s: inout SenderStats) {
+        // As interpolações do Logger são autoclosures que escapam: não podem capturar o `inout s`.
+        // Copia-se tudo para constantes locais primeiro.
         let c = s.diag?.capture
         let e = s.diag?.encode
         let m = s.diag?.memory
+        let captureFps = c?.fps ?? 0
+        let intervalP50 = c?.intervalMsP50 ?? 0
+        let intervalMax = c?.intervalMsMax ?? 0
+        let encodeP50 = e?.msP50 ?? 0
+        let encodeMax = e?.msMax ?? 0
+        let outWidth = e?.outputWidth ?? 0
+        let outHeight = e?.outputHeight ?? 0
+        let footprint = m?.footprintMb ?? 0
+        let limit = m?.limitMb ?? 0
+        let cpu = s.diag?.cpuPercent ?? 0
+        let queueMs = s.sendQueueMs ?? 0
+        let drops = s.framesDropped ?? 0
+        let thermal = s.thermal?.rawValue ?? "?"
         logger.info("""
-        captura \(c?.fps ?? 0, privacy: .public) fps (p50 \(c?.intervalMsP50 ?? 0, privacy: .public) ms, \
-        máx \(c?.intervalMsMax ?? 0, privacy: .public) ms) · encoder \(e?.msP50 ?? 0, privacy: .public)/\(e?.msMax ?? 0, privacy: .public) ms \
-        \(e?.outputWidth ?? 0, privacy: .public)x\(e?.outputHeight ?? 0, privacy: .public) · \
-        memória \(m?.footprintMb ?? 0, privacy: .public)/\(m?.limitMb ?? 0, privacy: .public) MB · \
-        CPU \(s.diag?.cpuPercent ?? 0, privacy: .public) % · fila \(s.sendQueueMs ?? 0, privacy: .public) ms · \
-        drops \(s.framesDropped ?? 0, privacy: .public) · \(s.thermal?.rawValue ?? "?", privacy: .public)
+        captura \(captureFps, privacy: .public) fps (p50 \(intervalP50, privacy: .public) ms, \
+        máx \(intervalMax, privacy: .public) ms) · encoder \(encodeP50, privacy: .public)/\(encodeMax, privacy: .public) ms \
+        \(outWidth, privacy: .public)x\(outHeight, privacy: .public) · \
+        memória \(footprint, privacy: .public)/\(limit, privacy: .public) MB · \
+        CPU \(cpu, privacy: .public) % · fila \(queueMs, privacy: .public) ms · \
+        drops \(drops, privacy: .public) · \(thermal, privacy: .public)
         """)
     }
 }
