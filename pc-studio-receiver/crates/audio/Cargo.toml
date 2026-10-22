@@ -1,0 +1,16 @@
+[package]
+name = "padstudio-audio"
+description = "Mixer de áudio do PadStudio: áudio do iPad + microfone do PC, 48 kHz, ganhos em tempo real"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+padstudio-engine = { path = "../engine" }
+padstudio-protocol = { path = "../protocol" }
+bytes = "1"
+cpal = "0.18"
+crossbeam-channel = "0.5"
+rubato = "5"
+serde = { version = "1", features = ["derive"] }

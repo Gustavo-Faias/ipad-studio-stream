@@ -1,0 +1,17 @@
+[package]
+name = "padstudio-probe"
+description = "Cliente de teste PSWP: handshake, relógio sincronizado, estatísticas e gravação do vídeo recebido"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "probe"
+path = "src/main.rs"
+
+[dependencies]
+padstudio-protocol = { path = "../../crates/protocol" }
+padstudio-usbmux = { path = "../../crates/usbmux" }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }

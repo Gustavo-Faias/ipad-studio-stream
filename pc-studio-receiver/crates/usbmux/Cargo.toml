@@ -1,0 +1,11 @@
+[package]
+name = "padstudio-usbmux"
+description = "Cliente usbmuxd: deteção de iPads por USB e túnel TCP para a porta do dispositivo"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+plist = "1"
+thiserror = "2"

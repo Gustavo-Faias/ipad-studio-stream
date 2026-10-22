@@ -1,0 +1,17 @@
+[package]
+name = "padstudio-fake-sender"
+description = "iPad simulado: serve PSWP com vídeo de teste gerado pelo FFmpeg"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "fake-sender"
+path = "src/main.rs"
+
+[dependencies]
+padstudio-protocol = { path = "../../crates/protocol" }
+anyhow = "1"
+bytes = "1"
+clap = { version = "4", features = ["derive"] }

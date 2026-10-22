@@ -1,0 +1,120 @@
+# Compila a app do iPad (ipad-sender) num runner macOS do GitHub e disponibiliza o .ipa.
+#
+# - Corre os testes do PadStudioKit em macOS (compila também o código só-Apple: VideoToolbox, métricas).
+# - Gera o projeto com XcodeGen e compila para iOS SEM assinatura (não precisa de conta de
+#   programador nem de segredos no repositório).
+# - O .ipa fica para download em Actions → execução → Artifacts (30 dias). Com uma tag `ipad-v*`
+#   também é anexado a uma Release.
+#
+# Instalar no iPad a partir do Windows: assinar com o Sideloadly e um Apple ID (ver docs/SPIKES.md §2).
+#
+# Custos: em repositórios públicos os runners macOS são gratuitos. Em privados, cada minuto macOS
+# conta 10× nos minutos gratuitos do plano (2000/mês no Free → ~200 min macOS; uma execução
+# demora ~5–10 min).
+
+name: iPad · build
+
+on:
+  push:
+    branches: [main]
+    tags: ["ipad-v*"]
+    paths:
+      - "ipad-sender/**"
+      - "protocol/**"
+      - ".github/workflows/build.yml"
+  pull_request:
+    paths:
+      - "ipad-sender/**"
+      - "protocol/**"
+      - ".github/workflows/build.yml"
+  workflow_dispatch:
+    inputs:
+      bundle_prefix:
+        description: "Prefixo dos bundle IDs (a extensão fica com <prefixo>.broadcast)"
+        required: false
+        default: "com.example.padstudio"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ipad-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ipa:
+    name: Testes + .ipa sem assinatura
+    # macOS 26 com Xcode 26.x (SDK iOS 26, o mesmo sistema do iPad de referência).
+    runs-on: macos-26
+    timeout-minutes: 40
+    env:
+      # Nas execuções manuais o prefixo vem do formulário; nas restantes, o valor por omissão.
+      PADSTUDIO_BUNDLE_PREFIX: ${{ inputs.bundle_prefix || 'com.example.padstudio' }}
+      BUILD_NUMBER: ${{ github.run_number }}
+    steps:
+      - name: Código
+        uses: actions/checkout@v6
+
+      - name: Ferramentas
+        run: |
+          xcodebuild -version
+          swift --version
+          brew install xcodegen
+          xcodegen --version
+
+      - name: Testes do PadStudioKit (macOS)
+        working-directory: ipad-sender/Packages/PadStudioKit
+        run: swift test
+
+      - name: Compilar para iOS e criar o .ipa
+        run: bash ipad-sender/scripts/build-ipa.sh "$RUNNER_TEMP/ipa"
+
+      - name: Guardar o .ipa
+        uses: actions/upload-artifact@v6
+        with:
+          name: PadStudio-ipa-${{ github.run_number }}
+          path: |
+            ${{ runner.temp }}/ipa/PadStudio-unsigned.ipa
+            ${{ runner.temp }}/ipa/BUILD_INFO.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Resumo
+        run: |
+          {
+            echo "## PadStudio — .ipa sem assinatura"
+            echo
+            echo '```'
+            cat "$RUNNER_TEMP/ipa/BUILD_INFO.txt"
+            echo '```'
+            echo
+            echo "Descarrega o artefacto **PadStudio-ipa-${{ github.run_number }}** no fim desta página."
+            echo "Para instalar a partir do Windows: abre o .ipa no Sideloadly, entra com o teu Apple ID e"
+            echo "liga o iPad por cabo (passos em docs/SPIKES.md §2)."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  release:
+    name: Anexar à Release
+    if: startsWith(github.ref, 'refs/tags/ipad-v')
+    needs: ipa
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Descarregar o .ipa
+        uses: actions/download-artifact@v7
+        with:
+          name: PadStudio-ipa-${{ github.run_number }}
+          path: dist
+
+      - name: Criar a Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$TAG" dist/PadStudio-unsigned.ipa dist/BUILD_INFO.txt \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "PadStudio iPad $TAG" \
+            --notes-file dist/BUILD_INFO.txt \
+            --prerelease

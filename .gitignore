@@ -1,0 +1,34 @@
+# Node / Vite
+node_modules/
+dist/
+
+# Rust / Tauri
+target/
+pc-studio-receiver/src-tauri/gen/
+pc-studio-receiver/src-tauri/binaries/
+
+# Xcode (o projeto é gerado pelo XcodeGen a partir de project.yml)
+ipad-sender/*.xcodeproj/
+ipad-sender/*.xcworkspace/
+ipad-sender/PadStudioHost/Info.plist
+ipad-sender/PadStudioBroadcast/Info.plist
+ipad-sender/Config/*.entitlements
+xcuserdata/
+DerivedData/
+ipad-sender/build/
+*.ipa
+.build/
+.swiftpm/
+
+# Gravações e dumps de stream
+*.mkv
+*.h264
+*.h265
+
+# Sistema / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.env

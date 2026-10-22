@@ -1,0 +1,733 @@
+{
+  "protocol": "PSWP",
+  "version": 1,
+  "header_len": 24,
+  "max_payload": 16777216,
+  "generated_by": "protocol/reference/gen-vectors.mjs",
+  "notes": [
+    "Todos os inteiros do cabeçalho e dos payloads binários são little-endian.",
+    "Tipos binários (payload_kind = binary): o encoder TEM DE produzir exatamente payload_hex a partir de fields.",
+    "Tipos JSON: compara-se payload_json semanticamente, não os bytes.",
+    "payload_kind = raw/empty: bytes opacos (frames de media ou tipos desconhecidos).",
+    "streams: concatenar e partir em pedaços de cada chunk_size; o parser incremental tem de devolver as mensagens na ordem de messages e ficar sem bytes pendentes.",
+    "invalid.stage = header: o parser incremental tem de falhar com o código indicado; stage = payload: o cabeçalho é válido e a falha ocorre ao descodificar o payload.",
+    "Bytes H.264/HEVC sintéticos: tipos de NAL corretos, conteúdo não descodificável."
+  ],
+  "messages": [
+    {
+      "name": "hello_usb",
+      "description": "HELLO do PC por USB com configuração inicial",
+      "hex": "50530100cf0000000000000000000000d0121300000000007b2270726f746f636f6c223a312c22636c69656e74223a2270632d73747564696f2d7265636569766572222c22636c69656e745f76657273696f6e223a22302e312e30222c227472616e73706f7274223a22757362222c2277616e74223a7b22766964656f223a747275652c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d2c22636f6e666967223a7b22636f646563223a2268323634222c226d61785f667073223a3132302c22626974726174655f627073223a35303030303030307d7d",
+      "header": {
+        "type": 1,
+        "type_name": "HELLO",
+        "flags": 0,
+        "payload_len": 207,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 1250000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b2270726f746f636f6c223a312c22636c69656e74223a2270632d73747564696f2d7265636569766572222c22636c69656e745f76657273696f6e223a22302e312e30222c227472616e73706f7274223a22757362222c2277616e74223a7b22766964656f223a747275652c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d2c22636f6e666967223a7b22636f646563223a2268323634222c226d61785f667073223a3132302c22626974726174655f627073223a35303030303030307d7d",
+      "payload_json": {
+        "protocol": 1,
+        "client": "pc-studio-receiver",
+        "client_version": "0.1.0",
+        "transport": "usb",
+        "want": {
+          "video": true,
+          "audio_app": true,
+          "audio_mic": false
+        },
+        "config": {
+          "codec": "h264",
+          "max_fps": 120,
+          "bitrate_bps": 50000000
+        }
+      }
+    },
+    {
+      "name": "hello_lan",
+      "description": "HELLO do PC pela rede local, com PIN",
+      "hex": "5053010068000000010000000000000040548900000000007b2270726f746f636f6c223a312c22636c69656e74223a2270632d73747564696f2d7265636569766572222c22636c69656e745f76657273696f6e223a22302e312e30222c227472616e73706f7274223a226c616e222c22746f6b656e223a22343832393133227d",
+      "header": {
+        "type": 1,
+        "type_name": "HELLO",
+        "flags": 0,
+        "payload_len": 104,
+        "seq": 1,
+        "aux": 0,
+        "pts_us": 9000000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b2270726f746f636f6c223a312c22636c69656e74223a2270632d73747564696f2d7265636569766572222c22636c69656e745f76657273696f6e223a22302e312e30222c227472616e73706f7274223a226c616e222c22746f6b656e223a22343832393133227d",
+      "payload_json": {
+        "protocol": 1,
+        "client": "pc-studio-receiver",
+        "client_version": "0.1.0",
+        "transport": "lan",
+        "token": "482913"
+      }
+    },
+    {
+      "name": "hello_ack",
+      "description": "Resposta do iPad com dispositivo, codecs e configuração efetiva",
+      "hex": "50530200cf0100000000000000000000e863d71d140000007b2270726f746f636f6c223a312c22736572766572223a2250616453747564696f42726f616463617374222c227365727665725f76657273696f6e223a22302e312e30222c2273657373696f6e5f6964223a2236463143324230452d384332442d344339412d394436312d324231453041374633433131222c22636c6f636b223a22686f73745f7573222c22646576696365223a7b226d6f64656c223a226950616431362c36222c2273797374656d223a22695061644f532032362e30222c2273637265656e5f7769647468223a323735322c2273637265656e5f686569676874223a323036342c226d61785f667073223a3132307d2c22636f64656373223a5b2268323634222c2268657663225d2c22636f6e666967223a7b22636f646563223a2268323634222c226d61785f667073223a3132302c226d696e5f667073223a31302c22626974726174655f627073223a35303030303030302c22626974726174655f6d6f6465223a22766272222c226d61785f7769647468223a313932302c226d61785f686569676874223a313434302c226b65796672616d655f696e74657276616c5f73223a302c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d7d",
+      "header": {
+        "type": 2,
+        "type_name": "HELLO_ACK",
+        "flags": 0,
+        "payload_len": 463,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 86400001000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b2270726f746f636f6c223a312c22736572766572223a2250616453747564696f42726f616463617374222c227365727665725f76657273696f6e223a22302e312e30222c2273657373696f6e5f6964223a2236463143324230452d384332442d344339412d394436312d324231453041374633433131222c22636c6f636b223a22686f73745f7573222c22646576696365223a7b226d6f64656c223a226950616431362c36222c2273797374656d223a22695061644f532032362e30222c2273637265656e5f7769647468223a323735322c2273637265656e5f686569676874223a323036342c226d61785f667073223a3132307d2c22636f64656373223a5b2268323634222c2268657663225d2c22636f6e666967223a7b22636f646563223a2268323634222c226d61785f667073223a3132302c226d696e5f667073223a31302c22626974726174655f627073223a35303030303030302c22626974726174655f6d6f6465223a22766272222c226d61785f7769647468223a313932302c226d61785f686569676874223a313434302c226b65796672616d655f696e74657276616c5f73223a302c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d7d",
+      "payload_json": {
+        "protocol": 1,
+        "server": "PadStudioBroadcast",
+        "server_version": "0.1.0",
+        "session_id": "6F1C2B0E-8C2D-4C9A-9D61-2B1E0A7F3C11",
+        "clock": "host_us",
+        "device": {
+          "model": "iPad16,6",
+          "system": "iPadOS 26.0",
+          "screen_width": 2752,
+          "screen_height": 2064,
+          "max_fps": 120
+        },
+        "codecs": [
+          "h264",
+          "hevc"
+        ],
+        "config": {
+          "codec": "h264",
+          "max_fps": 120,
+          "min_fps": 10,
+          "bitrate_bps": 50000000,
+          "bitrate_mode": "vbr",
+          "max_width": 1920,
+          "max_height": 1440,
+          "keyframe_interval_s": 0,
+          "audio_app": true,
+          "audio_mic": false
+        }
+      }
+    },
+    {
+      "name": "ping",
+      "description": "PING do PC (t0 no relógio do PC)",
+      "hex": "505303000800000004000000000000000000000000000000bb4b4c0000000000",
+      "header": {
+        "type": 3,
+        "type_name": "PING",
+        "flags": 0,
+        "payload_len": 8,
+        "seq": 4,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "binary",
+      "payload_hex": "bb4b4c0000000000",
+      "fields": {
+        "t0": 5000123
+      }
+    },
+    {
+      "name": "pong",
+      "description": "PONG do iPad (t1/t2 no relógio do iPad)",
+      "hex": "505304001800000004000000000000000000000000000000bb4b4c0000000000c861d71d14000000f561d71d14000000",
+      "header": {
+        "type": 4,
+        "type_name": "PONG",
+        "flags": 0,
+        "payload_len": 24,
+        "seq": 4,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "binary",
+      "payload_hex": "bb4b4c0000000000c861d71d14000000f561d71d14000000",
+      "fields": {
+        "t0": 5000123,
+        "t1": 86400000456,
+        "t2": 86400000501
+      }
+    },
+    {
+      "name": "sender_state_paused",
+      "description": "A transmissão foi pausada pelo sistema",
+      "hex": "50530700120000000000000000000000100e6b21140000007b227374617465223a22706175736564227d",
+      "header": {
+        "type": 7,
+        "type_name": "SENDER_STATE",
+        "flags": 0,
+        "payload_len": 18,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 86460010000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b227374617465223a22706175736564227d",
+      "payload_json": {
+        "state": "paused"
+      }
+    },
+    {
+      "name": "bye_replaced",
+      "description": "Ligação antiga substituída por uma nova",
+      "hex": "505305003b000000000000000000000050507a21140000007b22726561736f6e223a227265706c61636564222c226d657373616765223a224e6f7661206c696761c3a7c3a36f2055534220616365697465227d",
+      "header": {
+        "type": 5,
+        "type_name": "BYE",
+        "flags": 0,
+        "payload_len": 59,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 86461010000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b22726561736f6e223a227265706c61636564222c226d657373616765223a224e6f7661206c696761c3a7c3a36f2055534220616365697465227d",
+      "payload_json": {
+        "reason": "replaced",
+        "message": "Nova ligação USB aceite"
+      }
+    },
+    {
+      "name": "error_unsupported",
+      "description": "Erro não fatal em resposta a um CONFIGURE (ref_type 0x30)",
+      "hex": "505306006c0000000000000000000000900bf61d140000007b22636f6465223a22756e737570706f727465645f636f6e666967222c226d657373616765223a22484556432031302d626974206ec3a36f207375706f727461646f222c22666174616c223a66616c73652c227265665f74797065223a34382c227265665f736571223a337d",
+      "header": {
+        "type": 6,
+        "type_name": "ERROR",
+        "flags": 0,
+        "payload_len": 108,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 86402010000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b22636f6465223a22756e737570706f727465645f636f6e666967222c226d657373616765223a22484556432031302d626974206ec3a36f207375706f727461646f222c22666174616c223a66616c73652c227265665f74797065223a34382c227265665f736571223a337d",
+      "payload_json": {
+        "code": "unsupported_config",
+        "message": "HEVC 10-bit não suportado",
+        "fatal": false,
+        "ref_type": 48,
+        "ref_seq": 3
+      }
+    },
+    {
+      "name": "video_config_h264",
+      "description": "VIDEO_CONFIG H.264 1920x1440 @120, BT.709 video range, SPS+PPS",
+      "hex": "505310002700000001000000000000001087d71d14000000010878008007a00580f0fa02010101000000000167640034ac56501e005a200000000168ee3cb0",
+      "header": {
+        "type": 16,
+        "type_name": "VIDEO_CONFIG",
+        "flags": 0,
+        "payload_len": 39,
+        "seq": 1,
+        "aux": 0,
+        "pts_us": 86400010000
+      },
+      "payload_kind": "binary",
+      "payload_hex": "010878008007a00580f0fa02010101000000000167640034ac56501e005a200000000168ee3cb0",
+      "fields": {
+        "codec": 1,
+        "bit_depth": 8,
+        "fps_max": 120,
+        "width": 1920,
+        "height": 1440,
+        "bitrate_bps": 50000000,
+        "color_primaries": 1,
+        "transfer": 1,
+        "matrix": 1,
+        "full_range": false,
+        "param_sets_hex": "0000000167640034ac56501e005a200000000168ee3cb0",
+        "nal_types": [
+          7,
+          8
+        ]
+      }
+    },
+    {
+      "name": "video_config_hevc",
+      "description": "VIDEO_CONFIG HEVC nativo 2752x2064 @120, Display P3, VPS+SPS+PPS",
+      "hex": "5053100035000000020000000000000050d2231e1400000002087800c00a100800b4c4040c0101000000000140010c01ffff016000000001420101016000000300b0000000014401c172b46240",
+      "header": {
+        "type": 16,
+        "type_name": "VIDEO_CONFIG",
+        "flags": 0,
+        "payload_len": 53,
+        "seq": 2,
+        "aux": 0,
+        "pts_us": 86405010000
+      },
+      "payload_kind": "binary",
+      "payload_hex": "02087800c00a100800b4c4040c0101000000000140010c01ffff016000000001420101016000000300b0000000014401c172b46240",
+      "fields": {
+        "codec": 2,
+        "bit_depth": 8,
+        "fps_max": 120,
+        "width": 2752,
+        "height": 2064,
+        "bitrate_bps": 80000000,
+        "color_primaries": 12,
+        "transfer": 1,
+        "matrix": 1,
+        "full_range": false,
+        "param_sets_hex": "0000000140010c01ffff016000000001420101016000000300b0000000014401c172b46240",
+        "nal_types": [
+          32,
+          33,
+          34
+        ]
+      }
+    },
+    {
+      "name": "video_frame_keyframe",
+      "description": "Keyframe H.264 com parâmetros in-band, rotação 90° horário",
+      "hex": "505311132600000000000000721000001087d71d140000000000000167640034ac56501e005a200000000168ee3cb0000000016588840033fffe8a9b127c",
+      "header": {
+        "type": 17,
+        "type_name": "VIDEO_FRAME",
+        "flags": 19,
+        "payload_len": 38,
+        "seq": 0,
+        "aux": 4210,
+        "pts_us": 86400010000
+      },
+      "payload_kind": "raw",
+      "payload_hex": "0000000167640034ac56501e005a200000000168ee3cb0000000016588840033fffe8a9b127c",
+      "flags_decoded": {
+        "keyframe": true,
+        "params_inband": true,
+        "discontinuity": false,
+        "rotation": 1
+      },
+      "context_codec": 1,
+      "nal_types": [
+        7,
+        8,
+        5
+      ]
+    },
+    {
+      "name": "video_frame_p",
+      "description": "P-frame H.264 seguinte (8,333 ms depois), rotação 90°",
+      "hex": "505311100b000000010000008c0f00009da7d71d1400000000000001419a020c5f71e3",
+      "header": {
+        "type": 17,
+        "type_name": "VIDEO_FRAME",
+        "flags": 16,
+        "payload_len": 11,
+        "seq": 1,
+        "aux": 3980,
+        "pts_us": 86400018333
+      },
+      "payload_kind": "raw",
+      "payload_hex": "00000001419a020c5f71e3",
+      "flags_decoded": {
+        "keyframe": false,
+        "params_inband": false,
+        "discontinuity": false,
+        "rotation": 1
+      },
+      "context_codec": 1,
+      "nal_types": [
+        1
+      ]
+    },
+    {
+      "name": "video_frame_discontinuity",
+      "description": "Keyframe após descarte no emissor: seq salta de 1 para 5 (3 frames perdidos)",
+      "hex": "50531107260000000500000000140000d229d81d140000000000000167640034ac56501e005a200000000168ee3cb0000000016588840033fffe8a9b127c",
+      "header": {
+        "type": 17,
+        "type_name": "VIDEO_FRAME",
+        "flags": 7,
+        "payload_len": 38,
+        "seq": 5,
+        "aux": 5120,
+        "pts_us": 86400051666
+      },
+      "payload_kind": "raw",
+      "payload_hex": "0000000167640034ac56501e005a200000000168ee3cb0000000016588840033fffe8a9b127c",
+      "flags_decoded": {
+        "keyframe": true,
+        "params_inband": true,
+        "discontinuity": true,
+        "rotation": 0
+      },
+      "context_codec": 1,
+      "nal_types": [
+        7,
+        8,
+        5
+      ]
+    },
+    {
+      "name": "video_frame_edge_values",
+      "description": "Valores limite: seq e aux = u32 máximo, pts_us = 2^53 − 1",
+      "hex": "505311000b000000ffffffffffffffffffffffffffff1f0000000001419a020c5f71e3",
+      "header": {
+        "type": 17,
+        "type_name": "VIDEO_FRAME",
+        "flags": 0,
+        "payload_len": 11,
+        "seq": 4294967295,
+        "aux": 4294967295,
+        "pts_us": 9007199254740991
+      },
+      "payload_kind": "raw",
+      "payload_hex": "00000001419a020c5f71e3",
+      "flags_decoded": {
+        "keyframe": false,
+        "params_inband": false,
+        "discontinuity": false,
+        "rotation": 0
+      },
+      "context_codec": 1,
+      "nal_types": [
+        1
+      ]
+    },
+    {
+      "name": "audio_config_app",
+      "description": "Áudio da app: PCM s16le estéreo 48 kHz",
+      "hex": "5053120008000000000000000000000000000000000000000001020080bb0000",
+      "header": {
+        "type": 18,
+        "type_name": "AUDIO_CONFIG",
+        "flags": 0,
+        "payload_len": 8,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "binary",
+      "payload_hex": "0001020080bb0000",
+      "fields": {
+        "source": 0,
+        "format": 1,
+        "channels": 2,
+        "sample_rate": 48000
+      }
+    },
+    {
+      "name": "audio_config_mic",
+      "description": "Microfone do iPad: PCM s16le mono 44,1 kHz",
+      "hex": "5053120008000000000000000000000000000000000000000101010044ac0000",
+      "header": {
+        "type": 18,
+        "type_name": "AUDIO_CONFIG",
+        "flags": 0,
+        "payload_len": 8,
+        "seq": 0,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "binary",
+      "payload_hex": "0101010044ac0000",
+      "fields": {
+        "source": 1,
+        "format": 1,
+        "channels": 1,
+        "sample_rate": 44100
+      }
+    },
+    {
+      "name": "audio_frame_app",
+      "description": "Áudio da app: 4 frames estéreo s16le",
+      "hex": "505313001000000000000000dc0500000489d71d1400000000000000ff7f0180004000c01234edcb",
+      "header": {
+        "type": 19,
+        "type_name": "AUDIO_FRAME",
+        "flags": 0,
+        "payload_len": 16,
+        "seq": 0,
+        "aux": 1500,
+        "pts_us": 86400010500
+      },
+      "payload_kind": "raw",
+      "payload_hex": "00000000ff7f0180004000c01234edcb",
+      "flags_decoded": {
+        "source": 0,
+        "discontinuity": false
+      }
+    },
+    {
+      "name": "audio_frame_mic_discontinuity",
+      "description": "Microfone com descontinuidade: 4 frames mono",
+      "hex": "5053131108000000070000003408000000d1d91d140000000100ffff001000f0",
+      "header": {
+        "type": 19,
+        "type_name": "AUDIO_FRAME",
+        "flags": 17,
+        "payload_len": 8,
+        "seq": 7,
+        "aux": 2100,
+        "pts_us": 86400160000
+      },
+      "payload_kind": "raw",
+      "payload_hex": "0100ffff001000f0",
+      "flags_decoded": {
+        "source": 1,
+        "discontinuity": true
+      }
+    },
+    {
+      "name": "sender_stats",
+      "description": "Estatísticas do iPad (1 Hz)",
+      "hex": "50532000fc0000000c0000000000000010a28e1e140000007b226670735f63617074757265223a3131392e362c226670735f656e636f646564223a3131392e362c22626974726174655f627073223a34313233343536372c227461726765745f626974726174655f627073223a35303030303030302c226672616d65735f64726f70706564223a332c226b65796672616d6573223a322c2273656e645f71756575655f6279746573223a38343231312c2273656e645f71756575655f6d73223a312e342c22656e636f64655f6d735f617667223a342e312c22746865726d616c223a226e6f6d696e616c222c226d656d6f72795f6d62223a32312e372c226c6f775f706f7765725f6d6f6465223a66616c73657d",
+      "header": {
+        "type": 32,
+        "type_name": "SENDER_STATS",
+        "flags": 0,
+        "payload_len": 252,
+        "seq": 12,
+        "aux": 0,
+        "pts_us": 86412010000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b226670735f63617074757265223a3131392e362c226670735f656e636f646564223a3131392e362c22626974726174655f627073223a34313233343536372c227461726765745f626974726174655f627073223a35303030303030302c226672616d65735f64726f70706564223a332c226b65796672616d6573223a322c2273656e645f71756575655f6279746573223a38343231312c2273656e645f71756575655f6d73223a312e342c22656e636f64655f6d735f617667223a342e312c22746865726d616c223a226e6f6d696e616c222c226d656d6f72795f6d62223a32312e372c226c6f775f706f7765725f6d6f6465223a66616c73657d",
+      "payload_json": {
+        "fps_capture": 119.6,
+        "fps_encoded": 119.6,
+        "bitrate_bps": 41234567,
+        "target_bitrate_bps": 50000000,
+        "frames_dropped": 3,
+        "keyframes": 2,
+        "send_queue_bytes": 84211,
+        "send_queue_ms": 1.4,
+        "encode_ms_avg": 4.1,
+        "thermal": "nominal",
+        "memory_mb": 21.7,
+        "low_power_mode": false
+      }
+    },
+    {
+      "name": "receiver_report",
+      "description": "Relatório do PC (1 Hz)",
+      "hex": "50532100900000000c00000000000000d02dca00000000007b226670735f7265636569766564223a3131392e352c226670735f6465636f646564223a3131392e352c22726563765f626974726174655f627073223a34313130303030302c226c6174656e63795f6d735f703530223a392e382c226c6174656e63795f6d735f703935223a31342e322c227274745f6d73223a302e392c226465636f64655f6572726f7273223a307d",
+      "header": {
+        "type": 33,
+        "type_name": "RECEIVER_REPORT",
+        "flags": 0,
+        "payload_len": 144,
+        "seq": 12,
+        "aux": 0,
+        "pts_us": 13250000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b226670735f7265636569766564223a3131392e352c226670735f6465636f646564223a3131392e352c22726563765f626974726174655f627073223a34313130303030302c226c6174656e63795f6d735f703530223a392e382c226c6174656e63795f6d735f703935223a31342e322c227274745f6d73223a302e392c226465636f64655f6572726f7273223a307d",
+      "payload_json": {
+        "fps_received": 119.5,
+        "fps_decoded": 119.5,
+        "recv_bitrate_bps": 41100000,
+        "latency_ms_p50": 9.8,
+        "latency_ms_p95": 14.2,
+        "rtt_ms": 0.9,
+        "decode_errors": 0
+      }
+    },
+    {
+      "name": "configure",
+      "description": "Pedido do PC: HEVC, 60 fps, 20 Mbps",
+      "hex": "50533000340000000300000000000000002d3101000000007b22636f646563223a2268657663222c226d61785f667073223a36302c22626974726174655f627073223a32303030303030307d",
+      "header": {
+        "type": 48,
+        "type_name": "CONFIGURE",
+        "flags": 0,
+        "payload_len": 52,
+        "seq": 3,
+        "aux": 0,
+        "pts_us": 20000000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b22636f646563223a2268657663222c226d61785f667073223a36302c22626974726174655f627073223a32303030303030307d",
+      "payload_json": {
+        "codec": "hevc",
+        "max_fps": 60,
+        "bitrate_bps": 20000000
+      }
+    },
+    {
+      "name": "configure_ack",
+      "description": "Confirmação do iPad com a configuração efetiva",
+      "hex": "50533100de000000030000000000000010b4081f140000007b22726571756573745f736571223a332c226170706c696564223a747275652c22636f6e666967223a7b22636f646563223a2268657663222c226d61785f667073223a36302c226d696e5f667073223a31302c22626974726174655f627073223a32303030303030302c22626974726174655f6d6f6465223a22766272222c226d61785f7769647468223a313932302c226d61785f686569676874223a313434302c226b65796672616d655f696e74657276616c5f73223a302c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d7d",
+      "header": {
+        "type": 49,
+        "type_name": "CONFIGURE_ACK",
+        "flags": 0,
+        "payload_len": 222,
+        "seq": 3,
+        "aux": 0,
+        "pts_us": 86420010000
+      },
+      "payload_kind": "json",
+      "payload_hex": "7b22726571756573745f736571223a332c226170706c696564223a747275652c22636f6e666967223a7b22636f646563223a2268657663222c226d61785f667073223a36302c226d696e5f667073223a31302c22626974726174655f627073223a32303030303030302c22626974726174655f6d6f6465223a22766272222c226d61785f7769647468223a313932302c226d61785f686569676874223a313434302c226b65796672616d655f696e74657276616c5f73223a302c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d7d",
+      "payload_json": {
+        "request_seq": 3,
+        "applied": true,
+        "config": {
+          "codec": "hevc",
+          "max_fps": 60,
+          "min_fps": 10,
+          "bitrate_bps": 20000000,
+          "bitrate_mode": "vbr",
+          "max_width": 1920,
+          "max_height": 1440,
+          "keyframe_interval_s": 0,
+          "audio_app": true,
+          "audio_mic": false
+        }
+      }
+    },
+    {
+      "name": "request_keyframe",
+      "description": "Pedido de keyframe (payload vazio)",
+      "hex": "505332000000000009000000000000000000000000000000",
+      "header": {
+        "type": 50,
+        "type_name": "REQUEST_KEYFRAME",
+        "flags": 0,
+        "payload_len": 0,
+        "seq": 9,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "empty",
+      "payload_hex": ""
+    },
+    {
+      "name": "set_bitrate",
+      "description": "Mudar o bitrate para 35 Mbps em direto",
+      "hex": "505333000400000002000000000000000000000000000000c00e1602",
+      "header": {
+        "type": 51,
+        "type_name": "SET_BITRATE",
+        "flags": 0,
+        "payload_len": 4,
+        "seq": 2,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "binary",
+      "payload_hex": "c00e1602",
+      "fields": {
+        "bitrate_bps": 35000000
+      }
+    },
+    {
+      "name": "unknown_type_0x9a",
+      "description": "Tipo desconhecido (faixa experimental): o recetor TEM DE ignorar",
+      "hex": "50539a010400000001000000000000000000000000000000deadbeef",
+      "header": {
+        "type": 154,
+        "type_name": null,
+        "flags": 1,
+        "payload_len": 4,
+        "seq": 1,
+        "aux": 0,
+        "pts_us": 0
+      },
+      "payload_kind": "raw",
+      "payload_hex": "deadbeef"
+    }
+  ],
+  "streams": [
+    {
+      "name": "session_start_usb",
+      "description": "Início de sessão visto pelo PC, com um tipo desconhecido pelo meio",
+      "hex": "50530200cf0100000000000000000000e863d71d140000007b2270726f746f636f6c223a312c22736572766572223a2250616453747564696f42726f616463617374222c227365727665725f76657273696f6e223a22302e312e30222c2273657373696f6e5f6964223a2236463143324230452d384332442d344339412d394436312d324231453041374633433131222c22636c6f636b223a22686f73745f7573222c22646576696365223a7b226d6f64656c223a226950616431362c36222c2273797374656d223a22695061644f532032362e30222c2273637265656e5f7769647468223a323735322c2273637265656e5f686569676874223a323036342c226d61785f667073223a3132307d2c22636f64656373223a5b2268323634222c2268657663225d2c22636f6e666967223a7b22636f646563223a2268323634222c226d61785f667073223a3132302c226d696e5f667073223a31302c22626974726174655f627073223a35303030303030302c22626974726174655f6d6f6465223a22766272222c226d61785f7769647468223a313932302c226d61785f686569676874223a313434302c226b65796672616d655f696e74657276616c5f73223a302c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d7d5053120008000000000000000000000000000000000000000001020080bb0000505310002700000001000000000000001087d71d14000000010878008007a00580f0fa02010101000000000167640034ac56501e005a200000000168ee3cb0505311132600000000000000721000001087d71d140000000000000167640034ac56501e005a200000000168ee3cb0000000016588840033fffe8a9b127c505304001800000004000000000000000000000000000000bb4b4c0000000000c861d71d14000000f561d71d14000000505313001000000000000000dc0500000489d71d1400000000000000ff7f0180004000c01234edcb50539a010400000001000000000000000000000000000000deadbeef505311100b000000010000008c0f00009da7d71d1400000000000001419a020c5f71e350532000fc0000000c0000000000000010a28e1e140000007b226670735f63617074757265223a3131392e362c226670735f656e636f646564223a3131392e362c22626974726174655f627073223a34313233343536372c227461726765745f626974726174655f627073223a35303030303030302c226672616d65735f64726f70706564223a332c226b65796672616d6573223a322c2273656e645f71756575655f6279746573223a38343231312c2273656e645f71756575655f6d73223a312e342c22656e636f64655f6d735f617667223a342e312c22746865726d616c223a226e6f6d696e616c222c226d656d6f72795f6d62223a32312e372c226c6f775f706f7765725f6d6f6465223a66616c73657d",
+      "messages": [
+        "hello_ack",
+        "audio_config_app",
+        "video_config_h264",
+        "video_frame_keyframe",
+        "pong",
+        "audio_frame_app",
+        "unknown_type_0x9a",
+        "video_frame_p",
+        "sender_stats"
+      ],
+      "chunk_sizes": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        11,
+        23,
+        24,
+        25,
+        64,
+        4096
+      ]
+    },
+    {
+      "name": "pc_to_ipad",
+      "description": "Mensagens do PC para o iPad",
+      "hex": "50530100cf0000000000000000000000d0121300000000007b2270726f746f636f6c223a312c22636c69656e74223a2270632d73747564696f2d7265636569766572222c22636c69656e745f76657273696f6e223a22302e312e30222c227472616e73706f7274223a22757362222c2277616e74223a7b22766964656f223a747275652c22617564696f5f617070223a747275652c22617564696f5f6d6963223a66616c73657d2c22636f6e666967223a7b22636f646563223a2268323634222c226d61785f667073223a3132302c22626974726174655f627073223a35303030303030307d7d505303000800000004000000000000000000000000000000bb4b4c000000000050533000340000000300000000000000002d3101000000007b22636f646563223a2268657663222c226d61785f667073223a36302c22626974726174655f627073223a32303030303030307d505332000000000009000000000000000000000000000000505333000400000002000000000000000000000000000000c00e160250532100900000000c00000000000000d02dca00000000007b226670735f7265636569766564223a3131392e352c226670735f6465636f646564223a3131392e352c22726563765f626974726174655f627073223a34313130303030302c226c6174656e63795f6d735f703530223a392e382c226c6174656e63795f6d735f703935223a31342e322c227274745f6d73223a302e392c226465636f64655f6572726f7273223a307d",
+      "messages": [
+        "hello_usb",
+        "ping",
+        "configure",
+        "request_keyframe",
+        "set_bitrate",
+        "receiver_report"
+      ],
+      "chunk_sizes": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        11,
+        23,
+        24,
+        25,
+        64,
+        4096
+      ]
+    }
+  ],
+  "invalid": [
+    {
+      "name": "bad_magic",
+      "description": "Magic \"PX\" em vez de \"PS\"",
+      "stage": "header",
+      "error": "bad_magic",
+      "hex": "505803000000000000000000000000000000000000000000"
+    },
+    {
+      "name": "bad_magic_early",
+      "description": "Só 2 bytes errados: o parser incremental deve falhar logo",
+      "stage": "header",
+      "error": "bad_magic",
+      "hex": "4745"
+    },
+    {
+      "name": "payload_too_large",
+      "description": "payload_len = 16 MiB + 1",
+      "stage": "header",
+      "error": "payload_too_large",
+      "hex": "505311000100000100000000000000000000000000000000"
+    },
+    {
+      "name": "video_config_short",
+      "description": "VIDEO_CONFIG com 10 bytes (mínimo 16)",
+      "stage": "payload",
+      "error": "bad_payload",
+      "hex": "505310000a0000000000000000000000000000000000000001010101010101010101"
+    },
+    {
+      "name": "pong_short",
+      "description": "PONG com 16 bytes (mínimo 24)",
+      "stage": "payload",
+      "error": "bad_payload",
+      "hex": "50530400100000000000000000000000000000000000000002020202020202020202020202020202"
+    }
+  ]
+}

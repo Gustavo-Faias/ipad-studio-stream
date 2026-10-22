@@ -1,0 +1,9 @@
+// Valores locais do projeto iPad. Preenche antes de correr `xcodegen generate`.
+
+// Team ID da Apple (Xcode → Settings → Accounts → o teu team). Serve um Apple ID gratuito
+// ("Personal Team"): a app instala-se no iPad por 7 dias de cada vez.
+DEVELOPMENT_TEAM =
+
+// Prefixo único dos bundle IDs (com um Apple ID gratuito tem de ser diferente de tudo o que já
+// existe, ex.: com.<o-teu-nome>.padstudio). A extensão fica com "<prefixo>.broadcast".
+PADSTUDIO_BUNDLE_PREFIX = com.example.padstudio

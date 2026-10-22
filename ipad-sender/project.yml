@@ -1,0 +1,90 @@
+# Projeto Xcode do lado iPad, gerado com XcodeGen (https://github.com/yonaskolb/XcodeGen):
+#   brew install xcodegen && cd ipad-sender && xcodegen generate
+# Antes, preenche Config/Shared.xcconfig (Team ID e prefixo dos bundle IDs).
+#
+# Sem App Group por agora: a extensão recebe a configuração do PC (HELLO/CONFIGURE) e envia o
+# diagnóstico ao PC, por isso não precisa de partilhar dados com a app. Assim compila e assina com
+# um Apple ID gratuito (as equipas pessoais não suportam App Groups). O App Group volta no passo do
+# modo rede local, para o PIN aparecer na app.
+name: PadStudio
+
+options:
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+configFiles:
+  Debug: Config/Shared.xcconfig
+  Release: Config/Shared.xcconfig
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "2" # só iPad
+    CODE_SIGN_STYLE: Automatic
+    # A app e a extensão têm de ter a mesma versão. O CI substitui o número de build pelo da execução.
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  PadStudioKit:
+    path: Packages/PadStudioKit
+
+targets:
+  PadStudioHost:
+    type: application
+    platform: iOS
+    sources:
+      - PadStudioHost
+    dependencies:
+      - target: PadStudioBroadcast # embebida automaticamente na app
+      - package: PadStudioKit
+        product: PadStudioKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(PADSTUDIO_BUNDLE_PREFIX)
+    # Esquema partilhado: o xcodebuild precisa dele para compilar com pacotes Swift (CI).
+    scheme: {}
+    info:
+      path: PadStudioHost/Info.plist
+      properties:
+        CFBundleDisplayName: PadStudio
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSLocalNetworkUsageDescription: O PadStudio usa a rede local para enviar o ecrã para o PC quando o cabo não está ligado.
+        NSBonjourServices:
+          - _padstudio._tcp
+        NSMicrophoneUsageDescription: Para incluir o microfone do iPad na transmissão, se o ativares.
+
+  PadStudioBroadcast:
+    type: app-extension
+    platform: iOS
+    sources:
+      - PadStudioBroadcast
+    dependencies:
+      - package: PadStudioKit
+        product: PadStudioKit
+      - sdk: ReplayKit.framework
+      - sdk: VideoToolbox.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(PADSTUDIO_BUNDLE_PREFIX).broadcast
+    info:
+      path: PadStudioBroadcast/Info.plist
+      properties:
+        CFBundleDisplayName: PadStudio
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSLocalNetworkUsageDescription: O PadStudio usa a rede local para enviar o ecrã para o PC quando o cabo não está ligado.
+        NSBonjourServices:
+          - _padstudio._tcp
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.broadcast-services-upload
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).SampleHandler
+          RPBroadcastProcessMode: RPBroadcastProcessModeSampleBuffer
