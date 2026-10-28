@@ -6,4 +6,4 @@ DEVELOPMENT_TEAM =
 
 // Prefixo único dos bundle IDs (com um Apple ID gratuito tem de ser diferente de tudo o que já
 // existe, ex.: com.<o-teu-nome>.padstudio). A extensão fica com "<prefixo>.broadcast".
-PADSTUDIO_BUNDLE_PREFIX = com.example.padstudio
+PADSTUDIO_BUNDLE_PREFIX = com.gustavofaias.padstudio

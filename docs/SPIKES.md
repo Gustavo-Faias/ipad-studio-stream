@@ -77,6 +77,16 @@ também numa Release.
 4. No iPad, a primeira vez: Definições → Geral → VPN e gestão de dispositivos → confiar no teu Apple ID.
 5. Com um Apple ID gratuito a app dura **7 dias**; depois reinstala-se da mesma forma. O ID conta 2 por instalação (app + extensão), num máximo de 10 a cada 7 dias.
 
+**Erros de login no Sideloadly** (aparecem como «Guru Meditation … Login failed»):
+
+- **`-22406`:** palavra-passe errada ou demasiadas tentativas. Confirma-a em [account.apple.com](https://account.apple.com) e espera pelo menos 10 minutos antes de tentar de novo.
+- **`-80046` («This action cannot be completed at this time»):** a Apple recusou o login.
+  - Costuma vir depois de várias tentativas falhadas. Espera algumas horas, sem tentar.
+  - Em Advanced options → *Anisette Authentication*, troca de modo. O modo local precisa do iCloud para Windows na versão do site da Apple.
+  - Se o Apple ID tiver autenticação de dois fatores, escreve o código quando o Sideloadly o pedir.
+  - Alternativa: usar um Apple ID secundário só para instalar apps.
+- **«bundle ID não disponível»:** compila de novo com outro prefixo (Run workflow → `bundle_prefix`).
+
 **Se o build falhar:** o código só-Apple (encoder, métricas, extensão) é compilado pela primeira
 vez no runner. Os erros aparecem no passo «Testes do PadStudioKit (macOS)» ou «Compilar para iOS»;
 copia o log da execução para se corrigir.

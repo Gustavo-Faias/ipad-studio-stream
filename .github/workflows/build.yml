@@ -32,7 +32,7 @@ on:
       bundle_prefix:
         description: "Prefixo dos bundle IDs (a extensão fica com <prefixo>.broadcast)"
         required: false
-        default: "com.example.padstudio"
+        default: "com.gustavofaias.padstudio"
         type: string
 
 permissions:
@@ -50,7 +50,7 @@ jobs:
     timeout-minutes: 40
     env:
       # Nas execuções manuais o prefixo vem do formulário; nas restantes, o valor por omissão.
-      PADSTUDIO_BUNDLE_PREFIX: ${{ inputs.bundle_prefix || 'com.example.padstudio' }}
+      PADSTUDIO_BUNDLE_PREFIX: ${{ inputs.bundle_prefix || 'com.gustavofaias.padstudio' }}
       BUILD_NUMBER: ${{ github.run_number }}
     steps:
       - name: Código
